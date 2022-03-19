@@ -1,0 +1,65 @@
+* The following shows the creation of genuses_v6_sep_2021 table and how it is populated from the wcvp_v6_sep_2021 table:
+
+  Note that every row in wcvp_v6_sep_2021 contains a value for family and for genus.
+
+  sqlite> .schema genuses_v6_sep_2021
+  CREATE TABLE genuses_v6_sep_2021(
+    "kew_id" TEXT,
+    "family" TEXT,
+    "genus" TEXT,
+    "taxonomic_status" TEXT,
+    "accepted_kew_id" TEXT,
+    "accepted_name" TEXT,
+    "acc_name_tax_stat" TEXT
+  );
+
+  sqlite> INSERT INTO genuses_v6_sep_2021 (kew_id, family, genus, taxonomic_status, accepted_kew_id, accepted_name, acc_name_tax_stat) SELECT c.kew_id, c.family, c.genus, c.taxonomic_status, c.accepted_kew_id, c.accepted_name, p.taxonomic_status FROM wcvp_v6_sep_2021 c LEFT JOIN wcvp_v6_sep_2021 p ON p.kew_id = c.accepted_kew_id WHERE c.species = "";
+
+  sqlite> SELECT COUNT(*) FROM genuses_v6_sep_2021;
+  41226
+
+* The following shows the creation of species_v6_sep_2021 table and how it is populated from the wcvp_v6_sep_2021 table:
+
+  Note: The Insert clause should include WHERE species != "". This is to prevent returning a row for each genus in which there is no value in the species column.
+
+  sqlite> .tables
+  comments             sci_names            wcvp               
+  genuses_v6_sep_2021  trees                wcvp_v6_sep_2021   
+
+  sqlite> CREATE TABLE species_v6_sep_2021(
+     ...>   "kew_id" TEXT,
+     ...>   "genus" TEXT,
+     ...>   "species" TEXT,
+     ...>   "taxonomic_status" TEXT,
+     ...>   "accepted_kew_id" TEXT,
+     ...>   "accepted_name" TEXT,
+     ...>   "acc_name_tax_stat" TEXT
+     ...> );
+
+  sqlite> .tables
+  comments             species_v6_sep_2021  wcvp_v6_sep_2021   
+  genuses_v6_sep_2021  trees              
+  sci_names            wcvp               
+
+  sqlite> INSERT INTO species_v6_sep_2021 (kew_id, genus, species, taxonomic_status, accepted_kew_id, accepted_name, acc_name_tax_stat) SELECT c.kew_id, c.genus, c.species, c.taxonomic_status, c.accepted_kew_id, c.accepted_name, p.taxonomic_status FROM wcvp_v6_sep_2021 c LEFT JOIN wcvp_v6_sep_2021 p ON p.kew_id = c.accepted_kew_id WHERE c.infraspecies = "";
+
+  sqlite> SELECT COUNT(*) FROM species_v6_sep_2021;
+  1026563
+
+* The following shows the creation of infraspecies_v6_sep_2021 table and how it is populated from the wcvp_v6_sep_2021 table:
+
+CREATE TABLE infraspecies_v6_sep_2021(
+  "kew_id" TEXT,
+  "genus" TEXT,
+  "species" TEXT,
+  "infraspecies" TEXT,
+  "taxonomic_status" TEXT,
+  "accepted_kew_id" TEXT,
+  "accepted_name" TEXT,
+  "acc_name_tax_stat" TEXT
+);
+
+INSERT INTO infraspecies_v6_sep_2021 (kew_id, genus, species, infraspecies, taxonomic_status, accepted_kew_id, accepted_name, acc_name_tax_stat) SELECT c.kew_id, c.genus, c.species, c.infraspecies, c.taxonomic_status, c.accepted_kew_id, c.accepted_name, p.taxonomic_status FROM wcvp_v6_sep_2021 c LEFT JOIN wcvp_v6_sep_2021 p ON p.kew_id = c.accepted_kew_id WHERE c.infraspecies != "";
+
+sqlite> SELECT COUNT(*) FROM infraspecies_v6_sep_2021;
+170312

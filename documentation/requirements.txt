@@ -1,0 +1,21 @@
+Requirements
+
+  Functional
+
+    Input text starts with Genus
+
+    Option to start with Family could be added
+
+    If < 40 matches they should all be shown
+
+    if > or = 40 matches only the number of matches should be shown.
+
+    Once a genus name is chosen the name is displayed separately and species is searched for.
+
+    Once a species name is chosen the genus and species are displayed separately and infraspecies is searched for.
+
+    Once a family name is chosen the name is displayed separately and genus is searched for.
+
+    If match is not Accepted or Artificial Hybrid it should be unreturnable. It should have the accepted_name displayed and returnable.
+
+    Optionally, taxa of any taxonomic_status could be made returnable.

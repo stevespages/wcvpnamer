@@ -1,0 +1,45 @@
+form {
+  display: inline-block;
+}
+
+#search-input {
+  margin-right: 14px;
+  font-size: large;
+}
+
+button{
+  margin: 10px;
+}
+
+span[data-tax-stat="accepted"], #key-acc, .no-ifs-acc{
+  color: green;
+}
+
+span[data-tax-stat="artificial_hybrid"], #key-art-hyb, .no-ifs-art-hyb{
+  color: blue;
+}
+
+span[data-tax-stat=synonym], #key-syn, .no-ifs-syn{
+  color: #5a5a5a;
+}
+
+span[data-tax-stat=homotypic_synonym], #key-h-syn, .no-ifs-h-syn{
+  color: orange;
+}
+
+span[data-tax-stat=unplaced], #key-unp, .no-ifs-unp{
+  color: #5a5a5a;
+  color: pink;
+}
+
+span.two{
+  margin-left: 15px;
+}
+
+span.no-ifs-acc, span.no-ifs-art-hyb, span.no-ifs-syn, span.no-ifs-h-syn, span.no-ifs-unp{
+  margin-left: 9px;
+}
+
+ul#sugg-ul li {
+  margin-bottom: 4px;
+}

@@ -1,0 +1,107 @@
+* Lots of Lovely Notes..
+
+*********************************************************************
+
+* The keys of the suggestion object (suggestionsTaxonAndNumber.suggestions is an array of objects. These are individually referred to as suggestion in display-suggestions.js in the forEach loop):
+
+  Also shown are the possible combinations of the keys having values (y) or not having values (n).
+
+  kew_id              y y y y y y
+  genus               y y y y y y
+  species             n y y n y y
+  infraspecies        n n y n n y
+  taxonomic_status    y y y y y y
+  accepted_kew_id     n n n y y y
+  accepted_name       n n n y y y
+  acc_name_tax_stat   n n n y y y
+
+  ? in above table are because I am not sure if any families are only
+  respresented by lower taxa which are not Accepted or Artificial Hybrids.
+
+*********************************************************************
+
+* Possible suggUl list elements
+
+  1. Matching name's taxonomic_status is Accepted or Artificial Hybrid:
+
+  if(suggestion.taxonomic_status ===
+    "Accepted" 
+    OR "Artificial Hybrid"
+    OR "Unplaced")
+  {
+    
+    <li>
+
+      <span 
+
+        class = "not-accepted_name"
+
+        class = taxon
+                ( genus or species or infraspecies )
+
+        class = suggestion.taxonomic_status
+                ( accepted or artificial-hybrid or unplaced)
+
+        data-kew-id = suggestion.kew_id
+                      ( eg "1893-1" )
+
+      >
+
+        innerHTML
+        suggestion.genus eg. "Quercus"
+        suggestion.species eg. "robur"
+        suggestion.infraspecies "pedunculiflora"
+
+        (When span is clicked but not for "Unplaced")
+        <button class = "return-taxon taxon-option">Return</button>
+        <button class = "switch-taxon taxon-option">Switch</button>
+
+      </span>
+
+    </li>
+
+  3. Matching name's taxonomic_status = "Synonym or Homotypic_Synonym":
+    
+  if(suggestion.taxonomic_status === 
+    "Synonym"
+    OR "Homotypic_Synonym")
+  {
+
+    <li>
+
+      <span>As above except:
+        suggestion.taxonomic_status === "Synonym" or "Homotypic_Synonym"
+        And taxon-option Buttons will not be displayed.
+
+      <span
+
+        class = "accepted_name"
+
+                (To be implemented)
+        class = suggestion.acc_name_tax_rank
+                ( genus or species or infraspecies )
+
+        class = suggestion.acc_name_tax_stat
+                ( accepted or artificial-hybrid )
+
+        data-kew-id = suggestion.accepted_kew_id
+                      (eg. "1893-1")
+
+      >
+
+        innerHTML
+        suggestion.accepted_name (eg. "Quercus" or "Quercus robur")
+
+        (When span is clicked")
+        <button class = "return-taxon taxon-option">Return</button>
+        <button class = "switch-taxon taxon-option">Switch</button>
+
+      </span>
+
+    </li>
+
+*********************************************************************
+
+* switchTaxon where class = "not-accepted_name" {
+
+    

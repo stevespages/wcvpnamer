@@ -1,0 +1,85 @@
+* li elements produced by display-suggestions.js
+
+*********************************************************************
+
+  First Type:
+
+  If suggestion.taxonomic_status contains "Accepted" or "Artificial Hybrid" or "Unplaced" then the li element will contain a single span element constructed thus:
+
+  Note: taxon = suggestionsTaxonAndNumber.taxon
+  Thus taxon = "genus" or "species" or "infraspecies"
+  taxon is the taxon rank that was searched for by getSuggestions()
+
+  <li>
+
+    <span
+
+      class = "taxon-name"
+
+      data-kew-id = suggestion.kew_id (eg. "30183-1")
+
+      data-taxon-rank = taxon
+                        ("genus" or "species" or "infraspecies")
+
+      data-taxonomic-status = suggestion.taxonomic_status
+                              ("accepted" or "artificial-hybrid" or
+                               "unplaced")
+
+      data-source = "not-accepted_name"
+
+    >
+
+      innerHTML=
+        suggestion[taxon] (eg. "Quercus" or "robur" or "pedunculiflora")
+        Note: the innerHTML is always a single word.
+
+
+      (when span is clicked)
+      (only for data-taxonomic-status = "accepted" or "artificial-hybrid")
+      <button class = "taxon-option return-taxon">Return</button>
+      <button class = "taxon-option switch-taxon">Switch</button>
+
+    </span>
+
+*********************************************************************
+
+  Second Type:
+
+  If suggestion.taxonomic_status contains "Synonym" or "Homotypic_Synonym" then the li element will contain two span elements. The first span element will be the same as the First Type except data-taxonomic-status will contain "synonym" or "homotypic-synonym".
+
+  The second span element is for the taxon referred to in suggestion.accepted_name (this was empty in the First Case). It will be constructed thus:
+
+  Note: suggestionsTaxonAndNumber.taxon is not used here as the taxonomic rank of the referred to in suggestion.accepted_name may be different from the taxon rank that was searched for. It is provided in suggestion.acc_name_tax_rank.
+
+  <li>
+
+    <span
+
+      class = "taxon-name"
+
+      data-kew-id = suggestion.accepted_kew_id (eg. "30183-1")
+
+      data-taxon-rank = suggestion.acc_name_tax_rank
+                        ("genus" or "species" or "infraspecies")
+                        (Conceivably "family"???)
+
+      data-taxonomic-status = suggestion.acc_name_tax_stat
+                              ("accepted" or "artificial-hybrid")
+
+      data-source = "accepted_name"
+
+    >
+
+      innerHTML=
+        suggestion.accepted_name (eg. "Quercus" or "Quercus robur")
+        Note: the innerHTML is NOT always a single word.
+
+
+      (when span is clicked)
+      (all these spans can be clicked to give taxon-option buttons)
+      <button class = "taxon-option return-taxon">Return</button>
+      <button class = "taxon-option switch-taxon">Switch</button>
+
+    </span>
+ 
+*********************************************************************

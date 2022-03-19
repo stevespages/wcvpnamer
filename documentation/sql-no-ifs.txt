@@ -1,0 +1,124 @@
+sqlite> CREATE TABLE IF NOT EXISTS "no_ifs_acc" (
+   ...> id INTEGER PRIMARY KEY,
+   ...> genus TEXT,
+   ...> species TEXT,
+   ...> no_ifs_acc TEXT
+   ...> );
+
+sqlite> INSERT INTO no_ifs_acc (genus, species, no_ifs_acc) SELECT s.genus, s.species, COUNT(*) FROM wcvp_v6_sep_2021 w LEFT JOIN species_v6 s ON s.genus = w.genus AND s.species = w.species WHERE w.infraspecies != "" AND w.taxonomic_status = "Accepted" GROUP BY s.genus, s.species;
+
+sqlite> SELECT COUNT(*) FROM no_ifs_acc;
+18201
+
+*********************************************************************
+
+sqlite> CREATE TABLE IF NOT EXISTS "no_ifs_art_hyb" (
+   ...> id INTEGER PRIMARY KEY,
+   ...> genus TEXT,
+   ...> species TEXT,
+   ...> no_ifs_art_hyb TEXT
+   ...> );
+
+sqlite> INSERT INTO no_ifs_art_hyb (genus, species, no_ifs_art_hyb) SELECT s.genus, s.species, COUNT(*) FROM wcvp_v6_sep_2021 w LEFT JOIN species_v6 s ON s.genus = w.genus AND s.species = w.species WHERE w.infraspecies != "" AND w.taxonomic_status = "Artificial Hybrid" GROUP BY s.genus, s.species;
+
+sqlite> SELECT COUNT(*) FROM no_ifs_art_hyb;
+2
+
+*********************************************************************
+
+sqlite> CREATE TABLE IF NOT EXISTS "no_ifs_syn" (
+   ...> id INTEGER PRIMARY KEY,
+   ...> genus TEXT,
+   ...> species TEXT,
+   ...> no_ifs_syn TEXT
+   ...> );
+
+sqlite> INSERT INTO no_ifs_syn (genus, species, no_ifs_syn) SELECT s.genus, s.species, COUNT(*) FROM wcvp_v6_sep_2021 w LEFT JOIN species_v6 s ON s.genus = w.genus AND s.species = w.species WHERE w.infraspecies != "" AND w.taxonomic_status = "Synonym" GROUP BY s.genus, s.species;
+
+sqlite> SELECT COUNT(*) FROM no_ifs_syn;
+45896
+
+*********************************************************************
+
+sqlite> CREATE TABLE IF NOT EXISTS "no_ifs_h_syn" (
+   ...> id INTEGER PRIMARY KEY,
+   ...> genus TEXT,
+   ...> species TEXT,
+   ...> no_ifs_h_syn TEXT
+   ...> );
+
+sqlite> INSERT INTO no_ifs_h_syn (genus, species, no_ifs_h_syn) SELECT s.genus, s.species, COUNT(*) FROM wcvp_v6_sep_2021 w LEFT JOIN species_v6 s ON s.genus = w.genus AND s.species = w.species WHERE w.infraspecies != "" AND w.taxonomic_status = "Homotypic_Synonym" GROUP BY s.genus, s.species;
+
+sqlite> SELECT COUNT(*) FROM no_ifs_h_syn;
+17680
+
+*********************************************************************
+
+sqlite> CREATE TABLE IF NOT EXISTS "no_ifs_unp" (
+   ...> id INTEGER PRIMARY KEY,
+   ...> genus TEXT,
+   ...> species TEXT,
+   ...> no_ifs_unp TEXT
+   ...> );
+
+sqlite> INSERT INTO no_ifs_unp (genus, species, no_ifs_unp) SELECT s.genus, s.species, COUNT(*) FROM wcvp_v6_sep_2021 w LEFT JOIN species_v6 s ON s.genus = w.genus AND s.species = w.species WHERE w.infraspecies != "" AND w.taxonomic_status = "Unplaced" GROUP BY s.genus, s.species;
+
+sqlite> SELECT COUNT(*) FROM no_ifs_unp;
+582
+
+*********************************************************************
+
+Renamed species_v6 TO oldspecies_v6
+Created new species_v6:
+
+CREATE TABLE species_v6(
+    "kew_id" TEXT,
+    "taxon_name",
+    "taxonomic_status" TEXT,
+    "rank" TEXT,
+    "family" TEXT,
+    "genus" TEXT,
+    "species" TEXT,
+    "infraspecies" TEXT,
+    "accepted_kew_id" TEXT,
+    "accepted_name" TEXT,
+    "acc_tax_stat" TEXT,
+    "acc_tax_rank" TEXT,
+    "acc_family" TEXT,
+    "acc_genus" TEXT,
+    "acc_species" TEXT,
+    "acc_infraspecies" TEXT,
+    "no_ifs_acc" INTEGER,
+    "no_ifs_art_hyb" INTEGER,
+    "no_ifs_syn" INTEGER,
+    "no_ifs_h_syn" INTEGER,
+    "no_ifs_unp" INTEGER
+  );
+
+*********************************************************************
+
+sqlite> INSERT INTO species_v6 (kew_id, taxon_name, taxonomic_status, rank, family, genus, species, infraspecies, accepted_kew_id, accepted_name, acc_tax_stat, acc_tax_rank, acc_family, acc_genus, acc_species, acc_infraspecies, no_ifs_acc) SELECT o.kew_id, o.taxon_name, o.taxonomic_status, o.rank, o.family, o.genus, o.species, o.infraspecies, o.accepted_kew_id, o.accepted_name, o.acc_tax_stat, o.acc_tax_rank, o.acc_family, o.acc_genus, o.acc_species, o.acc_infraspecies, n.no_ifs_acc FROM oldspecies_v6 o LEFT JOIN no_ifs_acc n ON n.genus = o.genus AND n.species = o.species;
+
+sqlite> SELECT * FROM species_v6 WHERE genus = "Quercus" AND species = "robur";
+304293-2|Quercus robur|Accepted|SPECIES|Fagaceae|Quercus|robur||||||||||5||||
+
+*********************************************************************
+
+Renamed species_v6 TO oldspecies_v6
+Created new species_v6 as above
+
+sqlite> INSERT INTO species_v6 (kew_id, taxon_name, taxonomic_status, rank, family, genus, species, infraspecies, accepted_kew_id, accepted_name, acc_tax_stat, acc_tax_rank, acc_family, acc_genus, acc_species, acc_infraspecies, no_ifs_acc, no_ifs_art_hyb) SELECT o.kew_id, o.taxon_name, o.taxonomic_status, o.rank, o.family, o.genus, o.species, o.infraspecies, o.accepted_kew_id, o.accepted_name, o.acc_tax_stat, o.acc_tax_rank, o.acc_family, o.acc_genus, o.acc_species, o.acc_infraspecies, o.no_ifs_acc, n.no_ifs_art_hyb FROM oldspecies_v6 o LEFT JOIN no_ifs_art_hyb n ON n.genus = o.genus AND n.species = o.species;
+sqlite> SELECT * FROM species_v6 WHERE genus = "Quercus" AND species = "robur";
+
+304293-2|Quercus robur|Accepted|SPECIES|Fagaceae|Quercus|robur||||||||||5||||
+
+*********************************************************************
+
+sqlite> INSERT INTO species_v6 (kew_id, taxon_name, taxonomic_status, rank, family, genus, species, infraspecies, accepted_kew_id, accepted_name, acc_tax_stat, acc_tax_rank, acc_family, acc_genus, acc_species, acc_infraspecies, no_ifs_acc, no_ifs_art_hyb, no_ifs_syn) SELECT o.kew_id, o.taxon_name, o.taxonomic_status, o.rank, o.family, o.genus, o.species, o.infraspecies, o.accepted_kew_id, o.accepted_name, o.acc_tax_stat, o.acc_tax_rank, o.acc_family, o.acc_genus, o.acc_species, o.acc_infraspecies, o.no_ifs_acc, o.no_ifs_art_hyb, n.no_ifs_syn FROM oldspecies_v6 o LEFT JOIN no_ifs_syn n ON n.genus = o.genus AND n.species = o.species;
+sqlite> SELECT * FROM species_v6 WHERE genus = "Quercus" AND species = "robur";
+
+304293-2|Quercus robur|Accepted|SPECIES|Fagaceae|Quercus|robur||||||||||5||19||
+
+*********************************************************************
+
+etc...
