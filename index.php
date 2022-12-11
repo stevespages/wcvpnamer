@@ -37,7 +37,22 @@
     <div id="menu-d" style="display:none">
       <button id="close-menu-btn">Close</button>
       <h2>Menu</h2>
-      <a href="./about/">About</a>
+      <p><a href="./about/">About</a></p>
+<?php
+// If user supplied the myurl query parameter display this.
+// If user can not find a name for the tree they can return 'unsure'.
+    if($_GET['myurl']){
+?>
+    <p>
+        Return 
+        <a href='<?= $_GET['myurl'] ?>?kew_id=none&taxon_name=unsure'>
+            Unsure
+        </a>
+        for name.
+    </p>
+<?php
+    }
+?>
       <h3>key</h3>
       <p id="key-acc">Accepted</p>
       <p id="key-art-hyb">Artificial Hybrid</p>
