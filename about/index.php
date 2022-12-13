@@ -22,6 +22,15 @@
 
     <p>
       wcvpNamer is a purely experimental effort and is in development. The official WCVP website linked to above also provides a search mechanism to access plant names from the database. The website also makes the WCVP database available to download as a csv file. This database was used to make wcvpNamer.
-    </p>   
+    </p>
+
+    <h2>References</h2>
+    <a href="https://www.nature.com/articles/s41597-021-00997-6">
+      The World Checklist of Vascular Plants, a continuously updated resource for exploring global plant diversity
+    </a>
+    <a href="https://powo.science.kew.org/about-wcvp">
+      About the World Checklist of Vascular Plants
+    </a>
+  </body>
 </html>
 
